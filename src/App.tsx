@@ -68,9 +68,13 @@ export function App() {
         />
       </div>
 
-      <div className="shell">
-        <CategoryBar categories={groups.map((g) => g.category)} activeId={activeCategory} />
-      </div>
+      {/*
+        Deliberately not wrapped in a .shell: a sticky element can only travel
+        within its parent's box, so a wrapper that is only as tall as the bar
+        itself would let it scroll away on the first swipe. It spans the page
+        and constrains its own contents instead.
+      */}
+      <CategoryBar categories={groups.map((g) => g.category)} activeId={activeCategory} />
 
       <main id="menu" className="shell">
         <h2 className="sr-only">{t('menuHeading')}</h2>
