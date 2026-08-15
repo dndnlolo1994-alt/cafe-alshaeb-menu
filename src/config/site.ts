@@ -77,7 +77,7 @@ export const siteConfig = {
   },
 
   /** Canonical URL of the deployed menu, used for Open Graph and the QR code. */
-  siteUrl: '',
+  siteUrl: 'https://dndnlolo1994-alt.github.io/cafe-alshaeb-menu/',
 
   features: {
     /** Turn the book-opening intro off entirely. */
