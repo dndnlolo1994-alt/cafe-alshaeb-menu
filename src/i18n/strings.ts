@@ -20,7 +20,8 @@ export const ui = {
   resultsCount: { ar: 'نتيجة', en: 'results' },
 
   categoriesLabel: { ar: 'أقسام المنيو', en: 'Menu categories' },
-  allCategories: { ar: 'الكل', en: 'All' },
+  allCategories: { ar: 'كل الأقسام', en: 'All categories' },
+  browseTitle: { ar: 'اختر القسم', en: 'Choose a section' },
 
   languageToggle: { ar: 'English', en: 'العربية' },
   languageToggleLabel: { ar: 'Switch to English', en: 'التبديل إلى العربية' },

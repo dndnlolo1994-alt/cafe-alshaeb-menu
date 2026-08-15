@@ -35,24 +35,31 @@ const SIZE = {
   g1000family: { ar: '1000 غرام (عائلية)', en: '1000 gm (family)' },
 } as const
 
+/**
+ * Menu order: the substantial dishes lead, then lighter food, then drinks,
+ * then dessert and sheshah. The paper menu's own page sequence is unknown from
+ * the photographs, so ordering the sections is a presentation choice — change
+ * a `displayOrder` to re-order, nothing else depends on it. Item order inside
+ * each section still matches the printed page exactly.
+ */
 export const categories: Category[] = [
-  { id: 'pasta', name: { ar: 'الباستا', en: 'Pasta' }, displayOrder: 1, ocrSource: SRC.pasta },
-  { id: 'main-course', name: { ar: 'الطبق الرئيسي', en: 'Main Course' }, displayOrder: 2, ocrSource: SRC.pasta },
-  { id: 'fish-seafood', name: { ar: 'أسماك و سي فود', en: 'Fish & Seafood' }, displayOrder: 3, ocrSource: SRC.pasta },
-  { id: 'snacks', name: { ar: 'سناكات', en: 'Snacks' }, displayOrder: 4, ocrSource: SRC.snacks },
-  { id: 'kumpir', name: { ar: 'كومبير', en: 'Kumpir' }, displayOrder: 5, ocrSource: SRC.snacks },
-  { id: 'children', name: { ar: 'وجبة الأطفال', en: "Children's Meal" }, displayOrder: 6, ocrSource: SRC.snacks },
-  { id: 'smoked-meat', name: { ar: 'لحم مدخن', en: 'Smoked Meat' }, displayOrder: 7, ocrSource: SRC.smoked },
-  { id: 'grills', name: { ar: 'مشاوي', en: 'Grills' }, displayOrder: 8, ocrSource: SRC.grills },
-  { id: 'sandwich', name: { ar: 'ساندويش', en: 'Sandwich' }, displayOrder: 9, ocrSource: SRC.grills },
+  { id: 'grills', name: { ar: 'مشاوي', en: 'Grills' }, displayOrder: 1, ocrSource: SRC.grills },
+  { id: 'smoked-meat', name: { ar: 'لحم مدخن', en: 'Smoked Meat' }, displayOrder: 2, ocrSource: SRC.smoked },
+  { id: 'main-course', name: { ar: 'الطبق الرئيسي', en: 'Main Course' }, displayOrder: 3, ocrSource: SRC.pasta },
+  { id: 'fish-seafood', name: { ar: 'أسماك و سي فود', en: 'Fish & Seafood' }, displayOrder: 4, ocrSource: SRC.pasta },
+  { id: 'pasta', name: { ar: 'الباستا', en: 'Pasta' }, displayOrder: 5, ocrSource: SRC.pasta },
+  { id: 'sandwich', name: { ar: 'ساندويش', en: 'Sandwich' }, displayOrder: 6, ocrSource: SRC.grills },
+  { id: 'snacks', name: { ar: 'سناكات', en: 'Snacks' }, displayOrder: 7, ocrSource: SRC.snacks },
+  { id: 'kumpir', name: { ar: 'كومبير', en: 'Kumpir' }, displayOrder: 8, ocrSource: SRC.snacks },
+  { id: 'children', name: { ar: 'وجبة الأطفال', en: "Children's Meal" }, displayOrder: 9, ocrSource: SRC.snacks },
   { id: 'hot-drinks', name: { ar: 'مشروبات ساخنة', en: 'Hot Drinks' }, displayOrder: 10, ocrSource: SRC.drinks },
   { id: 'cold-drinks', name: { ar: 'مشروبات باردة', en: 'Cold Drinks' }, displayOrder: 11, ocrSource: SRC.drinks },
-  { id: 'sweets', name: { ar: 'حلويات', en: 'Sweets' }, displayOrder: 12, ocrSource: SRC.sweets },
-  { id: 'ice-cream', name: { ar: 'آيس كريم', en: 'Ice Cream' }, displayOrder: 13, ocrSource: SRC.sweets },
-  { id: 'sheshah', name: { ar: 'أراجيل', en: 'Sheshah' }, displayOrder: 14, ocrSource: SRC.sweets },
-  { id: 'cocktail', name: { ar: 'كوكتيل طبيعي', en: 'Fresh Cocktails' }, displayOrder: 15, ocrSource: SRC.juices },
-  { id: 'fruit-juice', name: { ar: 'عصير طبيعي', en: 'Fresh Juice' }, displayOrder: 16, ocrSource: SRC.juices },
-  { id: 'chiller', name: { ar: 'شيلر', en: 'Chiller' }, displayOrder: 17, ocrSource: SRC.juices },
+  { id: 'cocktail', name: { ar: 'كوكتيل طبيعي', en: 'Fresh Cocktails' }, displayOrder: 12, ocrSource: SRC.juices },
+  { id: 'fruit-juice', name: { ar: 'عصير طبيعي', en: 'Fresh Juice' }, displayOrder: 13, ocrSource: SRC.juices },
+  { id: 'chiller', name: { ar: 'شيلر', en: 'Chiller' }, displayOrder: 14, ocrSource: SRC.juices },
+  { id: 'sweets', name: { ar: 'حلويات', en: 'Sweets' }, displayOrder: 15, ocrSource: SRC.sweets },
+  { id: 'ice-cream', name: { ar: 'آيس كريم', en: 'Ice Cream' }, displayOrder: 16, ocrSource: SRC.sweets },
+  { id: 'sheshah', name: { ar: 'أراجيل', en: 'Sheshah' }, displayOrder: 17, ocrSource: SRC.sweets },
 ]
 
 export const items: MenuItem[] = [

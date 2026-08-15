@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { categories, items } from '../data/menu'
+import { EMBLEM_IDS } from '../components/CategoryEmblem'
 
 /**
  * Guards the transcription itself. These are the numbers counted off the
@@ -36,6 +37,19 @@ describe('menu data shape', () => {
       const count = items.filter((i) => i.category === category.id).length
       expect(count, `category ${category.id}`).toBeGreaterThan(0)
     }
+  })
+
+  it('draws an emblem for every category', () => {
+    // The overview grid is all emblems; a category without one would show an
+    // empty tile.
+    for (const category of categories) {
+      expect(EMBLEM_IDS, `no emblem for ${category.id}`).toContain(category.id)
+    }
+  })
+
+  it('orders the categories uniquely and contiguously', () => {
+    const orders = categories.map((c) => c.displayOrder).sort((a, b) => a - b)
+    expect(orders).toEqual(categories.map((_, i) => i + 1))
   })
 
   it('orders items uniquely inside each category', () => {

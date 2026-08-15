@@ -61,8 +61,18 @@ export function buildSearchIndex(items: MenuItem[], categories: Category[]): Sea
 }
 
 /**
+ * Shortest collapsed term still worth matching loosely. Below this a run like
+ * "zzz" collapses to "z", which appears in half the menu.
+ */
+const MIN_LOOSE_LEN = 4
+
+/**
  * Every whitespace-separated term must appear somewhere in the item, so
  * "iced latte" narrows rather than widens.
+ *
+ * The typo-tolerant pass runs only when the exact one finds nothing. Letting
+ * both run together makes real queries noisy: collapsed "latte" becomes "late",
+ * which is inside "chocolate", so Hot Chocolate came back as a latte.
  */
 export function searchItems(
   query: string,
@@ -72,15 +82,20 @@ export function searchItems(
   const terms = normalize(query).split(' ').filter(Boolean)
   if (terms.length === 0) return items
 
-  const looseTerms = terms.map(loosen)
   const byId = new Map(index.map((entry) => [entry.id, entry]))
+
+  const exact = items.filter((item) => {
+    const entry = byId.get(item.id)
+    return entry ? terms.every((term) => entry.text.includes(term)) : false
+  })
+  if (exact.length > 0) return exact
+
+  const looseTerms = terms.map(loosen)
+  if (looseTerms.some((term) => term.length < MIN_LOOSE_LEN)) return []
 
   return items.filter((item) => {
     const entry = byId.get(item.id)
-    if (!entry) return false
-    return terms.every(
-      (term, i) => entry.text.includes(term) || entry.loose.includes(looseTerms[i]),
-    )
+    return entry ? looseTerms.every((term) => entry.loose.includes(term)) : false
   })
 }
 

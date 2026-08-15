@@ -57,6 +57,20 @@ describe('search', () => {
     expect(find('cappuccino')).toContain('cappuccino')
   })
 
+  it('does not let the typo pass pollute a query that already matches', () => {
+    // Collapsed, "latte" becomes "late", which is inside "chocolate".
+    const latte = find('latte')
+    expect(latte).toContain('coffee-latte')
+    expect(latte).not.toContain('hot-chocolate')
+    expect(latte.every((id) => id.includes('latte'))).toBe(true)
+  })
+
+  it('does not match a short run of repeated letters against everything', () => {
+    // "zzz" collapses to "z", which appears all over the menu.
+    expect(find('zzz')).toHaveLength(0)
+    expect(find('aaa')).toHaveLength(0)
+  })
+
   it('narrows as terms are added', () => {
     const latte = find('latte')
     const icedLatte = find('iced latte')

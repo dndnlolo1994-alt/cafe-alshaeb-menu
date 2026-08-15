@@ -1,12 +1,12 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { categories, items } from './data/menu'
 import { buildSearchIndex, searchItems } from './utils/search'
-import { useActiveCategory } from './hooks/useActiveCategory'
 import { useIntro } from './hooks/useIntro'
 import { useT } from './i18n/useLanguage'
 import { BackToTop } from './components/BackToTop'
 import { BookIntro } from './components/BookIntro'
 import { CategoryBar } from './components/CategoryBar'
+import { CategoryGrid } from './components/CategoryGrid'
 import { Footer } from './components/Footer'
 import { Header } from './components/Header'
 import { ItemCard } from './components/ItemCard'
@@ -17,36 +17,68 @@ import type { MenuItem } from './types'
 
 const sortedCategories = categories.slice().sort((a, b) => a.displayOrder - b.displayOrder)
 const sortedItems = items.slice().sort((a, b) => a.displayOrder - b.displayOrder)
+const availableItems = sortedItems.filter((item) => item.available)
 
 export function App() {
   const { t, pick } = useT()
   const [query, setQuery] = useState('')
-  const [selected, setSelected] = useState<MenuItem | null>(null)
+  /** null means the category overview; otherwise the category being read. */
+  const [selected, setSelected] = useState<string | null>(null)
+  const [openItem, setOpenItem] = useState<MenuItem | null>(null)
   const intro = useIntro()
 
   const index = useMemo(() => buildSearchIndex(sortedItems, sortedCategories), [])
+  const searching = query.trim() !== ''
 
-  const visibleItems = useMemo(
-    () => searchItems(query, sortedItems.filter((item) => item.available), index),
-    [query, index],
+  const results = useMemo(
+    () => (searching ? searchItems(query, availableItems, index) : []),
+    [query, searching, index],
   )
 
-  // Only categories that still have something to show are rendered, so a
-  // search never leaves empty headings behind.
-  const groups = useMemo(
+  const counts = useMemo(
+    () =>
+      sortedCategories.map((category) => ({
+        category,
+        count: availableItems.filter((item) => item.category === category.id).length,
+      })),
+    [],
+  )
+
+  // Search results stay grouped so a match keeps the context of its category.
+  const resultGroups = useMemo(
     () =>
       sortedCategories
         .map((category) => ({
           category,
-          items: visibleItems.filter((item) => item.category === category.id),
+          items: results.filter((item) => item.category === category.id),
         }))
         .filter((group) => group.items.length > 0),
-    [visibleItems],
+    [results],
   )
 
-  const searching = query.trim() !== ''
-  const visibleCategoryIds = useMemo(() => groups.map((g) => g.category.id), [groups])
-  const activeCategory = useActiveCategory(visibleCategoryIds, !intro.visible)
+  const currentCategory = sortedCategories.find((c) => c.id === selected)
+  const currentItems = useMemo(
+    () => (selected ? availableItems.filter((item) => item.category === selected) : []),
+    [selected],
+  )
+
+  const chooseCategory = useCallback((id: string | null) => {
+    setSelected(id)
+    setQuery('')
+  }, [])
+
+  // Opening a category should start at its first item, not wherever the reader
+  // happened to be in the previous one.
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        ? 'auto'
+        : 'smooth',
+    })
+  }, [selected])
+
+  const showBar = searching || selected !== null
 
   return (
     <>
@@ -64,62 +96,83 @@ export function App() {
         <SearchBar
           value={query}
           onChange={setQuery}
-          resultCount={searching ? visibleItems.length : null}
+          resultCount={searching ? results.length : null}
         />
       </div>
 
       {/*
-        Deliberately not wrapped in a .shell: a sticky element can only travel
-        within its parent's box, so a wrapper that is only as tall as the bar
-        itself would let it scroll away on the first swipe. It spans the page
-        and constrains its own contents instead.
+        Not wrapped in a .shell: a sticky element can only travel within its
+        parent's box, so a wrapper only as tall as the bar would let it scroll
+        away on the first swipe. It spans the page and constrains its own
+        contents instead.
       */}
-      <CategoryBar categories={groups.map((g) => g.category)} activeId={activeCategory} />
+      {showBar && (
+        <CategoryBar
+          categories={sortedCategories}
+          activeId={searching ? null : selected}
+          onSelect={chooseCategory}
+        />
+      )}
 
       <main id="menu" className="shell">
-        <h2 className="sr-only">{t('menuHeading')}</h2>
-
-        {groups.length === 0 ? (
-          <div className="empty">
-            <p className="empty__title">{t('noResultsTitle')}</p>
-            <p className="empty__body">{t('noResultsBody')}</p>
-          </div>
-        ) : (
-          groups.map(({ category, items: groupItems }) => (
-            <section
-              key={category.id}
-              className="section"
-              id={`section-${category.id}`}
-              aria-labelledby={`heading-${category.id}`}
-            >
-              <div className="section__head">
-                <h3 className="section__title" id={`heading-${category.id}`}>
-                  {pick(category.name)}
-                </h3>
-                <span className="section__rule" aria-hidden="true" />
-                <span className="section__count">
-                  {groupItems.length} {t('itemsInCategory')}
-                </span>
+        {searching ? (
+          <>
+            <h2 className="sr-only">{t('menuHeading')}</h2>
+            {resultGroups.length === 0 ? (
+              <div className="empty">
+                <p className="empty__title">{t('noResultsTitle')}</p>
+                <p className="empty__body">{t('noResultsBody')}</p>
               </div>
-
-              <ul className="items">
-                {groupItems.map((item) => (
-                  <ItemCard key={item.id} item={item} onOpen={setSelected} />
-                ))}
-              </ul>
-            </section>
-          ))
+            ) : (
+              resultGroups.map(({ category, items: groupItems }) => (
+                <section key={category.id} className="section">
+                  <div className="section__head">
+                    <h3 className="section__title">{pick(category.name)}</h3>
+                    <span className="section__rule" aria-hidden="true" />
+                    <span className="section__count">
+                      {groupItems.length} {t('itemsInCategory')}
+                    </span>
+                  </div>
+                  <ul className="items">
+                    {groupItems.map((item) => (
+                      <ItemCard key={item.id} item={item} onOpen={setOpenItem} />
+                    ))}
+                  </ul>
+                </section>
+              ))
+            )}
+          </>
+        ) : selected && currentCategory ? (
+          <section className="section">
+            <div className="section__head">
+              <h2 className="section__title">{pick(currentCategory.name)}</h2>
+              <span className="section__rule" aria-hidden="true" />
+              <span className="section__count">
+                {currentItems.length} {t('itemsInCategory')}
+              </span>
+            </div>
+            <ul className="items">
+              {currentItems.map((item) => (
+                <ItemCard key={item.id} item={item} onOpen={setOpenItem} />
+              ))}
+            </ul>
+          </section>
+        ) : (
+          <>
+            <h2 className="overview__title">{t('browseTitle')}</h2>
+            <CategoryGrid categories={counts} onSelect={chooseCategory} />
+          </>
         )}
       </main>
 
       <Footer onReplayIntro={intro.replay} />
       <BackToTop />
 
-      {selected && (
+      {openItem && (
         <ItemModal
-          item={selected}
-          category={sortedCategories.find((c) => c.id === selected.category)}
-          onClose={() => setSelected(null)}
+          item={openItem}
+          category={sortedCategories.find((c) => c.id === openItem.category)}
+          onClose={() => setOpenItem(null)}
         />
       )}
     </>

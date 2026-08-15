@@ -5,7 +5,10 @@
   padding-inline: var(--sp-4);
 }
 
-/* ============================================================ Book intro */
+/* ============================================================ Book intro
+ * Painted from the raw ramps, not the semantic tokens: the cover is a physical
+ * object and should look like the same red book in either theme.
+ */
 .intro {
   position: fixed;
   inset: 0;
@@ -52,18 +55,14 @@
   transform-style: preserve-3d;
   transition: transform 1.15s var(--ease), box-shadow 1.15s var(--ease);
 
-  /* Dark red leather: layered grain plus a soft sheen down the spine side. */
   background:
     linear-gradient(115deg, rgba(255, 255, 255, 0.09) 0%, transparent 38%),
     repeating-linear-gradient(58deg, rgba(0, 0, 0, 0.05) 0 2px, transparent 2px 5px),
     repeating-linear-gradient(-58deg, rgba(0, 0, 0, 0.04) 0 2px, transparent 2px 6px),
     linear-gradient(160deg, var(--red-700) 0%, var(--red-800) 55%, var(--red-900) 100%);
-  box-shadow:
-    var(--shadow-lg),
-    inset 0 0 0 1px rgba(0, 0, 0, 0.28);
+  box-shadow: var(--shadow-lg), inset 0 0 0 1px rgba(0, 0, 0, 0.28);
 }
 
-/* The gold rule sits inside the leather, thin and matte. */
 .intro__cover::before {
   content: '';
   position: absolute;
@@ -83,7 +82,6 @@
   pointer-events: none;
 }
 
-/* Spine shading: which edge depends on reading direction. */
 .intro__spine {
   position: absolute;
   inset-block: 0;
@@ -103,7 +101,7 @@
 [dir='rtl'] .intro__cover { transform-origin: right center; --spine-fade: left; }
 
 .intro.is-opening .intro__cover {
-  box-shadow: 0 30px 70px rgba(32, 27, 25, 0.3);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.35);
 }
 
 [dir='ltr'] .intro.is-opening .intro__cover { transform: rotateY(-108deg); }
@@ -182,7 +180,6 @@
   text-underline-offset: 4px;
 }
 
-/* Reduced motion (and low-power devices) get a plain cross-fade. */
 @media (prefers-reduced-motion: reduce) {
   .intro__stage { perspective: none; }
   .intro__cover { transition: none; }
@@ -197,9 +194,7 @@
 /* ============================================================ Header */
 .site-header {
   padding-block: var(--sp-5) var(--sp-4);
-  text-align: center;
-  background:
-    radial-gradient(ellipse 70% 100% at 50% 0%, rgba(195, 155, 69, 0.14), transparent 70%);
+  background: radial-gradient(ellipse 70% 100% at 50% 0%, var(--wash-gold), transparent 70%);
   border-block-end: 1px solid var(--line-soft);
 }
 
@@ -224,7 +219,7 @@
   border-radius: 50%;
   padding: 3px;
   background: var(--paper-100);
-  box-shadow: 0 0 0 1px var(--gold-500), var(--shadow-sm);
+  box-shadow: 0 0 0 1px var(--gold), var(--shadow-sm);
 }
 
 .brand__mark img {
@@ -238,7 +233,7 @@
 .brand__name {
   font-size: var(--step-2);
   font-weight: 700;
-  color: var(--red-800);
+  color: var(--accent);
   letter-spacing: -0.01em;
 }
 
@@ -251,16 +246,16 @@
   flex: none;
   min-height: 44px;
   padding: var(--sp-2) var(--sp-4);
-  border: 1px solid var(--gold-500);
+  border: 1px solid var(--gold);
   border-radius: 999px;
   background: var(--surface);
-  color: var(--red-800);
+  color: var(--accent);
   font-weight: 600;
   font-size: var(--step--1);
   transition: background 0.15s var(--ease);
 }
 
-.lang-toggle:hover { background: var(--gold-050); }
+.lang-toggle:hover { background: var(--gold-soft); }
 
 /* ============================================================ Search */
 .search {
@@ -282,10 +277,10 @@
   box-shadow: var(--shadow-sm);
 }
 
-.search__field::placeholder { color: var(--ink-400); }
+.search__field::placeholder { color: var(--text-faint); }
 
 .search__field:focus-visible {
-  border-color: var(--red-700);
+  border-color: var(--accent);
   outline-offset: 1px;
 }
 
@@ -296,7 +291,7 @@
   translate: 0 -50%;
   width: 1.15rem;
   height: 1.15rem;
-  color: var(--ink-400);
+  color: var(--text-faint);
   pointer-events: none;
 }
 
@@ -312,7 +307,7 @@
   border: 0;
   border-radius: 50%;
   background: none;
-  color: var(--ink-500);
+  color: var(--text-muted);
 }
 
 .search__clear:hover { background: var(--surface-alt); }
@@ -324,8 +319,7 @@
   color: var(--text-muted);
 }
 
-/* ============================================================ Category bar */
-/*
+/* ============================================================ Category bar
  * Full-bleed and a direct child of the page flow, so it stays pinned for the
  * whole scroll. Wrapping it in the centred column would cap how far it can
  * travel and it would slide away on the first swipe.
@@ -334,7 +328,7 @@
   position: sticky;
   inset-block-start: 0;
   z-index: 20;
-  background: color-mix(in srgb, var(--paper-200) 92%, transparent);
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
   backdrop-filter: blur(8px);
   border-block-end: 1px solid var(--line-soft);
 }
@@ -355,12 +349,15 @@
 
 .catbar__chip {
   flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
   min-height: 40px;
   padding: var(--sp-2) var(--sp-4);
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--surface);
-  color: var(--ink-700);
+  color: var(--text-strong);
   font-size: var(--step--1);
   font-weight: 600;
   white-space: nowrap;
@@ -369,16 +366,101 @@
     border-color 0.15s var(--ease);
 }
 
-.catbar__chip:hover { border-color: var(--gold-500); }
+.catbar__emblem {
+  width: 1.15em;
+  height: 1.15em;
+  flex: none;
+  color: var(--gold-text);
+}
+
+.catbar__chip:hover { border-color: var(--gold); }
 
 .catbar__chip[aria-current='true'] {
-  background: var(--red-800);
-  border-color: var(--red-800);
-  color: var(--paper-100);
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-on);
+}
+
+.catbar__chip[aria-current='true'] .catbar__emblem { color: var(--accent-on); }
+
+/* ============================================================ Overview grid */
+.overview__title {
+  margin-block: var(--sp-6) var(--sp-4);
+  font-size: var(--step-2);
+  color: var(--accent);
+  text-align: center;
+}
+
+.catgrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-3);
+}
+
+@media (min-width: 30em) {
+  .catgrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (min-width: 44em) {
+  .catgrid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+.cattile {
+  width: 100%;
+  height: 100%;
+  min-height: 8.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  padding: var(--sp-4) var(--sp-3);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+  transition: border-color 0.15s var(--ease), transform 0.15s var(--ease),
+    box-shadow 0.15s var(--ease);
+}
+
+.cattile:hover {
+  border-color: var(--gold);
+  box-shadow: var(--shadow-md);
+}
+
+.cattile:active { transform: translateY(1px); }
+
+.cattile__art {
+  width: 3.25rem;
+  height: 3.25rem;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--gold-soft);
+  color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--gold-line);
+}
+
+.cattile__emblem { width: 1.85rem; height: 1.85rem; }
+
+.cattile__name {
+  font-size: var(--step-0);
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.35;
+  text-wrap: balance;
+}
+
+.cattile__count {
+  font-size: var(--step--1);
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
 }
 
 /* ============================================================ Sections */
-.section { padding-block-start: var(--sp-6); }
+.section { padding-block-start: var(--sp-5); }
 
 .section__head {
   display: flex;
@@ -389,18 +471,14 @@
 
 .section__title {
   font-size: var(--step-2);
-  color: var(--red-800);
+  color: var(--accent);
   white-space: nowrap;
 }
 
 .section__rule {
   flex: 1;
   height: 1px;
-  background: linear-gradient(
-    to var(--rule-dir, right),
-    var(--gold-500),
-    transparent
-  );
+  background: linear-gradient(to var(--rule-dir, right), var(--gold), transparent);
 }
 
 [dir='rtl'] .section__rule { --rule-dir: left; }
@@ -431,9 +509,8 @@
     box-shadow 0.15s var(--ease);
 }
 
-/* Only interactive cards react to a hover. */
 button.item:hover {
-  border-color: var(--gold-500);
+  border-color: var(--gold);
   box-shadow: var(--shadow-md);
 }
 
@@ -444,8 +521,8 @@ button.item:active { transform: translateY(1px); }
 /*
  * Photo slot. No item carries a photo today — the paper menu only contains
  * generic stock banners, not pictures of these dishes — but the moment a real
- * one is added to an item it renders here at a fixed ratio, so cards with and
- * without a photo keep the same rhythm and nothing shifts while it loads.
+ * one is added it renders here at a fixed ratio, so cards with and without a
+ * photo keep the same rhythm and nothing shifts while it loads.
  */
 .item__media {
   margin: calc(var(--sp-4) * -1) calc(var(--sp-4) * -1) var(--sp-3);
@@ -483,7 +560,7 @@ button.item:active { transform: translateY(1px); }
 .item__name {
   font-size: var(--step-1);
   font-weight: 600;
-  color: var(--ink-900);
+  color: var(--text);
 }
 
 /* Dotted leader in the tradition of a printed menu. */
@@ -499,7 +576,7 @@ button.item:active { transform: translateY(1px); }
   flex: none;
   font-weight: 700;
   font-size: var(--step-1);
-  color: var(--red-700);
+  color: var(--accent);
   font-variant-numeric: tabular-nums;
   direction: ltr;
   white-space: nowrap;
@@ -515,10 +592,9 @@ button.item:active { transform: translateY(1px); }
 .item__note {
   margin-block-start: var(--sp-2);
   font-size: var(--step--1);
-  color: var(--gold-700);
+  color: var(--gold-text);
 }
 
-/* Size rows for multi-variant items. */
 .variants {
   margin-block-start: var(--sp-3);
   padding-block-start: var(--sp-2);
@@ -540,7 +616,7 @@ button.item:active { transform: translateY(1px); }
   flex: none;
   margin-inline-start: auto;
   font-weight: 700;
-  color: var(--red-700);
+  color: var(--accent);
   font-variant-numeric: tabular-nums;
   direction: ltr;
   white-space: nowrap;
@@ -553,7 +629,7 @@ button.item:active { transform: translateY(1px); }
   margin-block-start: var(--sp-3);
   font-size: var(--step--1);
   font-weight: 600;
-  color: var(--red-700);
+  color: var(--accent);
 }
 
 .item__more svg { width: 0.85em; height: 0.85em; }
@@ -572,7 +648,7 @@ button.item:active { transform: translateY(1px); }
 
 .empty__title {
   font-size: var(--step-1);
-  color: var(--red-800);
+  color: var(--accent);
   margin-block-end: var(--sp-2);
 }
 
@@ -589,7 +665,7 @@ button.item:active { transform: translateY(1px); }
   display: grid;
   place-items: end center;
   padding: var(--sp-4);
-  background: rgba(32, 27, 25, 0.55);
+  background: rgba(10, 7, 5, 0.62);
   animation: fade-in 0.2s var(--ease) both;
 }
 
@@ -631,7 +707,7 @@ button.item:active { transform: translateY(1px); }
   border: 1px solid var(--line);
   border-radius: 50%;
   background: var(--surface);
-  color: var(--ink-700);
+  color: var(--text-strong);
 }
 
 .modal__close:hover { background: var(--surface-alt); }
@@ -639,7 +715,7 @@ button.item:active { transform: translateY(1px); }
 .modal__category {
   font-size: var(--step--1);
   font-weight: 600;
-  color: var(--gold-700);
+  color: var(--gold-text);
   letter-spacing: 0.04em;
 }
 
@@ -647,7 +723,7 @@ button.item:active { transform: translateY(1px); }
   margin-block: var(--sp-1) var(--sp-2);
   padding-inline-end: 2.5rem;
   font-size: var(--step-3);
-  color: var(--ink-900);
+  color: var(--text);
 }
 
 .modal__desc {
@@ -659,7 +735,7 @@ button.item:active { transform: translateY(1px); }
   margin-block-start: var(--sp-4);
   font-size: var(--step-2);
   font-weight: 700;
-  color: var(--red-700);
+  color: var(--accent);
   font-variant-numeric: tabular-nums;
   direction: ltr;
   text-align: start;
@@ -672,7 +748,7 @@ button.item:active { transform: translateY(1px); }
 .modal__blockTitle {
   font-size: var(--step--1);
   font-weight: 700;
-  color: var(--ink-700);
+  color: var(--text-strong);
   letter-spacing: 0.04em;
   margin-block-end: var(--sp-3);
 }
@@ -685,10 +761,10 @@ button.item:active { transform: translateY(1px); }
 
 .chip {
   padding: var(--sp-1) var(--sp-3);
-  border: 1px solid var(--gold-200);
+  border: 1px solid var(--gold-line);
   border-radius: 999px;
-  background: var(--gold-050);
-  color: var(--ink-700);
+  background: var(--gold-soft);
+  color: var(--text-strong);
   font-size: var(--step--1);
 }
 
@@ -703,7 +779,7 @@ button.item:active { transform: translateY(1px); }
   padding: var(--sp-2) var(--sp-3);
   border: 1px solid var(--line-soft);
   border-radius: var(--radius-sm);
-  background: var(--paper-200);
+  background: var(--bg);
   font-size: var(--step-0);
 }
 
@@ -712,12 +788,12 @@ button.item:active { transform: translateY(1px); }
   margin-block-start: var(--sp-7);
   padding-block: var(--sp-6) var(--sp-7);
   border-block-start: 1px solid var(--line);
-  background: linear-gradient(180deg, transparent, rgba(195, 155, 69, 0.08));
+  background: linear-gradient(180deg, transparent, var(--wash-gold));
 }
 
 .footer__title {
   font-size: var(--step-1);
-  color: var(--red-800);
+  color: var(--accent);
   margin-block-end: var(--sp-4);
 }
 
@@ -740,10 +816,10 @@ button.item:active { transform: translateY(1px); }
 .footer__note {
   margin-block-start: var(--sp-5);
   padding: var(--sp-3) var(--sp-4);
-  border-inline-start: 3px solid var(--gold-500);
+  border-inline-start: 3px solid var(--gold);
   border-radius: var(--radius-sm);
-  background: var(--gold-050);
-  color: var(--ink-700);
+  background: var(--gold-soft);
+  color: var(--text-strong);
   font-size: var(--step--1);
 }
 
@@ -771,11 +847,11 @@ button.item:active { transform: translateY(1px); }
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--surface);
-  color: var(--ink-700);
+  color: var(--text-strong);
   font-size: var(--step--1);
 }
 
-.footer__replay:hover { border-color: var(--gold-500); }
+.footer__replay:hover { border-color: var(--gold); }
 
 /* ============================================================ Back to top */
 .to-top {
@@ -787,10 +863,10 @@ button.item:active { transform: translateY(1px); }
   height: 48px;
   display: grid;
   place-items: center;
-  border: 1px solid var(--gold-500);
+  border: 1px solid var(--gold);
   border-radius: 50%;
-  background: var(--red-800);
-  color: var(--paper-100);
+  background: var(--accent);
+  color: var(--accent-on);
   box-shadow: var(--shadow-md);
   opacity: 0;
   visibility: hidden;

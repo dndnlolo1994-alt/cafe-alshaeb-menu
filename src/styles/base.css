@@ -20,10 +20,10 @@ body {
   background-color: var(--bg);
   /* Warm paper grain: two soft washes plus a faint fibre weave. */
   background-image:
-    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(195, 155, 69, 0.09), transparent 70%),
-    radial-gradient(ellipse 60% 40% at 100% 100%, rgba(158, 27, 32, 0.05), transparent 70%),
-    repeating-linear-gradient(90deg, rgba(32, 27, 25, 0.016) 0 1px, transparent 1px 3px),
-    repeating-linear-gradient(0deg, rgba(32, 27, 25, 0.016) 0 1px, transparent 1px 3px);
+    radial-gradient(ellipse 80% 50% at 50% 0%, var(--wash-gold), transparent 70%),
+    radial-gradient(ellipse 60% 40% at 100% 100%, var(--wash-red), transparent 70%),
+    repeating-linear-gradient(90deg, var(--grain) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(0deg, var(--grain) 0 1px, transparent 1px 3px);
   background-attachment: fixed;
   min-height: 100vh;
   overflow-wrap: break-word;
@@ -67,7 +67,7 @@ img {
 
 /* Focus is always visible and always high-contrast on paper. */
 :focus-visible {
-  outline: 3px solid var(--red-700);
+  outline: 3px solid var(--accent);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -91,8 +91,8 @@ img {
   inset-block-start: -100px;
   z-index: 100;
   padding: var(--sp-2) var(--sp-4);
-  background: var(--red-800);
-  color: var(--paper-100);
+  background: var(--accent);
+  color: var(--accent-on);
   border-radius: var(--radius-sm);
   font-weight: 600;
   text-decoration: none;
