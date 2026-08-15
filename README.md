@@ -5,6 +5,28 @@
 
 A mobile-first bilingual (Arabic/English) digital menu, served from a static build and openable from a plain link or a QR code.
 
+## 🔗 المنيو المباشر / Live menu
+
+**https://dndnlolo1994-alt.github.io/cafe-alshaeb-menu/**
+
+رمز QR جاهز للطباعة في `public/qr/`:
+
+| الملف | الاستخدام |
+|---|---|
+| `menu-qr-card.png` | بطاقة كاملة باسم الكافيه — جاهزة للطباعة ووضعها على الطاولات |
+| `menu-qr.png` | الرمز وحده، 1200 بكسل |
+| `menu-qr.svg` | نسخة متجهة تكبر لأي مقاس طباعة بلا فقدان جودة |
+
+لإعادة توليدها بعد تغيير الرابط:
+
+```bash
+npm run qr
+```
+
+يقرأ السكربت `siteUrl` من `src/config/site.ts`، فلا يمكن أن يشير الرمز إلى عنوان قديم.
+
+**النشر تلقائي:** أي `git push` على `main` يشغّل فحص الأنواع والـlint والاختبارات ثم يبني الموقع وينشره. إذا فشل أي اختبار — مثل سعر خاطئ — يتوقف النشر ولا يصل الخطأ للزبائن.
+
 ---
 
 ## التشغيل / Running
