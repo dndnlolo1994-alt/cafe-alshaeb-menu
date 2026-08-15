@@ -1,0 +1,75 @@
+/*
+ * Palette sampled directly from the logo in pic/logo.jpeg:
+ * the red disc, the aged-gold scalloped rim and the charcoal ring.
+ */
+:root {
+  /* Brand reds */
+  --red-900: #6E1114;
+  --red-800: #85161A;
+  --red-700: #9E1B20;
+  --red-600: #B22B30;
+  --red-050: #F7E9E7;
+
+  /* Aged gold, never mirror-bright */
+  --gold-700: #8A6A24;
+  --gold-600: #A9832F;
+  --gold-500: #C39B45;
+  --gold-400: #D9B463;
+  --gold-200: #EBD6A4;
+  --gold-050: #F6EEDA;
+
+  /* Charcoal / ink */
+  --ink-900: #201B19;
+  --ink-700: #3A322E;
+  --ink-500: #5E534D;
+  --ink-400: #7C6F68;
+
+  /* Warm paper */
+  --paper-100: #FFFCF6;
+  --paper-200: #FBF5E9;
+  --paper-300: #F5EBD9;
+  --paper-400: #EADDC5;
+
+  /* Semantic */
+  --bg: var(--paper-200);
+  --surface: var(--paper-100);
+  --surface-alt: var(--paper-300);
+  --text: var(--ink-900);
+  --text-muted: var(--ink-500);
+  --accent: var(--red-700);
+  --accent-strong: var(--red-800);
+  --line: rgba(32, 27, 25, 0.12);
+  --line-soft: rgba(32, 27, 25, 0.07);
+
+  /* Type */
+  --font: 'Cairo', 'Tajawal', 'Segoe UI', system-ui, -apple-system,
+    'Helvetica Neue', Arial, 'Noto Sans Arabic', sans-serif;
+
+  --step--1: clamp(0.78rem, 0.75rem + 0.15vw, 0.85rem);
+  --step-0: clamp(0.95rem, 0.92rem + 0.2vw, 1.05rem);
+  --step-1: clamp(1.08rem, 1.02rem + 0.3vw, 1.2rem);
+  --step-2: clamp(1.3rem, 1.2rem + 0.5vw, 1.55rem);
+  --step-3: clamp(1.6rem, 1.4rem + 0.9vw, 2.1rem);
+
+  /* Space */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.5rem;
+  --sp-6: 2rem;
+  --sp-7: 3rem;
+
+  --radius-sm: 8px;
+  --radius: 14px;
+  --radius-lg: 20px;
+
+  --shadow-sm: 0 1px 2px rgba(32, 27, 25, 0.06), 0 2px 8px rgba(32, 27, 25, 0.04);
+  --shadow-md: 0 4px 14px rgba(32, 27, 25, 0.1);
+  --shadow-lg: 0 18px 48px rgba(32, 27, 25, 0.24);
+
+  /* Sticky category bar height, used to offset scroll targets. */
+  --catbar-h: 3.25rem;
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}

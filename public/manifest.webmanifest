@@ -1,0 +1,33 @@
+{
+  "name": "كافيه الشعب — المنيو | Cafe AlShaeb Menu",
+  "short_name": "كافيه الشعب",
+  "description": "المنيو الرقمي لكافيه الشعب بالعربية والإنجليزية",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FBF5E9",
+  "theme_color": "#9E1B20",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "brand/favicon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "brand/favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "brand/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
